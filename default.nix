@@ -6,7 +6,7 @@ let
   };
 
   inputs = rec {
-    purs-0_15_0_alpha_02 = import ./purs/0.15.0-alpha-02.nix {
+    purs-0_15_0-alpha-02 = import ./purs/0.15.0-alpha-02.nix {
       inherit pkgs;
     };
 
@@ -116,9 +116,11 @@ let
       inherit pkgs;
     };
 
-    pulp = import ./pulp {
-      inherit pkgs;
-    };
+    pulp-15_0_0 = import ./pulp/15.0.0 { inherit pkgs; };
+
+    pulp-16_0_0-0 = import ./pulp/16.0.0-0 { inherit pkgs; };
+
+    pulp = pulp-15_0_0;
 
     purescript-language-server = import ./purescript-language-server {
       inherit pkgs;

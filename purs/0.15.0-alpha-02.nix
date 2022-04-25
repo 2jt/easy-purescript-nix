@@ -9,15 +9,23 @@ let
       pkgs.fetchurl
         {
           url = "https://github.com/purescript/purescript/releases/download/${version}/macos.tar.gz";
-          sha256 = "sha256-pmnW3wo9KJ6f5b0iGtqaAhiMYOAZ2sYh6uDYx8zN0rE=";
+          sha256 = "1cfjrp6cgn70x8hwdnhrw1h8q602kbd1l8mxwngrwa1x1bgxcsd6";
         }
     else
       pkgs.fetchurl {
         url = "https://github.com/purescript/purescript/releases/download/${version}/linux64.tar.gz";
-        sha256 = "sha256-g2cmpX3bkCFUfcl2eRPGFOvyLW1l0vgbZGYOMT/o4Ys=";
+        sha256 = "12z1x0zk23k6chdzilk5dlnz5sqlqq9pjxn9gma2346vgnjjcrw3";
       };
+
+  # Temporary fix for https://github.com/justinwoo/easy-purescript-nix/issues/188
+  pkgs_ncurses = pkgs.extend (self: super: {
+      ncurses5 = super.ncurses5.overrideAttrs (attr: {
+        configureFlags = attr.configureFlags ++ ["--with-versioned-syms"];
+      });
+    });
 
 in
 import ./mkPursDerivation.nix {
-  inherit pkgs version src;
+  inherit version src;
+  pkgs = pkgs_ncurses;
 }
